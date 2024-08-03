@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 import {
   signInStart,
   signInSuccess,
@@ -76,6 +77,7 @@ const SignIn = () => {
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <OAuth />
 
         <div className="flex gap-3 mt-5">
           <p>Dont have an account ?</p>
