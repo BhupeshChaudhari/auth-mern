@@ -84,7 +84,7 @@ const SignIn = () => {
           </Link>
         </div>
         <p className="text-red-700 font-semibold pt-2 mt-1">
-          {error && "Something Went Wrong !"}
+          {error ? error.message || "Something went wrong" : ""}
         </p>
       </form>
     </div>
