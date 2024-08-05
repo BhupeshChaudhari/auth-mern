@@ -39,13 +39,14 @@ export const signin = async (req, res, next) => {
 
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: hashPassword, ...rest } = validUser._doc;
-    const expiryDate = new Date(Date(Date.now() + 3600000));
-    res.cookie("token", token, { httpOnly: true, expires: expiryDate });
-    console.log("After setting cookie:", res.getHeaders());
-    res.status(200).json({
-      data: rest,
-      token: token,
-    });
+    const expiryDate = new Date(Date.now() + 3600000);
+    res
+      .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
+      .status(200)
+      .json({
+        data: rest,
+        token: token,
+      });
   } catch (error) {
     next(error);
   }
@@ -63,7 +64,7 @@ export const google = async (req, res, next) => {
       const { password: hashPassword, ...rest } = user._doc;
       const expiryDate = new Date(Date(Date.now() + 3600000));
       res
-        .cookie("token", token, { httpOnly: true, expires: expiryDate })
+        .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
         .status(200)
         .json({
           data: rest,
@@ -90,7 +91,7 @@ export const google = async (req, res, next) => {
       const { password: hashPassword2, ...rest } = newUser._doc;
       const expiryDate = new Date(Date(Date.now() + 3600000));
       res
-        .cookie("token", token, { httpOnly: true, expires: expiryDate })
+        .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
         .status(200)
         .json({
           data: rest,
