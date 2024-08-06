@@ -62,7 +62,7 @@ export const google = async (req, res, next) => {
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: hashPassword, ...rest } = user._doc;
-      const expiryDate = new Date(Date(Date.now() + 3600000));
+      const expiryDate = new Date(Date.now() + 3600000);
       res
         .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
         .status(200)
@@ -86,10 +86,12 @@ export const google = async (req, res, next) => {
         password: hashPassword,
         profilePicture: photo,
       });
+
+      console.log(password);
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: hashPassword2, ...rest } = newUser._doc;
-      const expiryDate = new Date(Date(Date.now() + 3600000));
+      const expiryDate = new Date(Date.now() + 3600000);
       res
         .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
         .status(200)
@@ -99,6 +101,11 @@ export const google = async (req, res, next) => {
         });
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
+};
+
+//signout
+export const signout = (req, res) => {
+  res.clearCookie("access_token").status(200).json("Signout success!");
 };
