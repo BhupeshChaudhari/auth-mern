@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 
+//test
 export const test = (req, res) => {
   res.json({
     messge: "API is working",
@@ -36,6 +37,21 @@ export const updateUser = async (req, res, next) => {
     res.status(200).json({
       data: rest,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//delete
+export const deleteUser = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return next(errorHandler(401, "You cannot delete account"));
+  }
+
+  try {
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(200).json("User has been deleted...");
   } catch (error) {
     next(error);
   }
